@@ -25,8 +25,14 @@
 
 template <class T>
 struct reflect_trait {
+    static  constexpr bool has_members() { 
+        return requires(T t) {
+            t.for_each_members([](const char* key, auto &) {});
+        };
+    }; 
     template <class Func>
-    static constexpr void for_each_members(T& self, Func&& func) {
+    static constexpr void for_each_members(T const& cself, Func&& func) {
+        T &self = const_cast<T &>(cself);
         self.for_each_members(func);
     }
 };
@@ -35,19 +41,26 @@ struct reflect_trait {
 #define REFLECT__TYPE_BEGIN(Type, ...) \
 template <> \ 
 struct reflect_trait<Type> { \ 
+    static  constexpr bool has_members() {return true;}; \ 
     template <class Func> \
-    static constexpr void for_each_members(Type& object, Func&& func) {
+    static constexpr void for_each_members(Type const& cself, Func&& func) { \
+        Type &self = const_cast<Type &>(cself);
 
 
 #define REFLECT__TYPE_TEMPLATE_BEGIN(Type, ...) \
 template <__VA_ARGS__> \ 
 struct reflect_trait<REFLECT__PP_CALL(REFLECT__PP_CALL Type)> { \ 
+    static  constexpr bool has_members() {return true;}; \ 
     template <class Func> \
-    static constexpr void for_each_members(REFLECT__PP_CALL(REFLECT__PP_CALL Type)& object, Func&& func) {
+    static constexpr void for_each_members(REFLECT__PP_CALL(REFLECT__PP_CALL Type) const& cself, Func&& func) { \
+        REFLECT__PP_CALL(REFLECT__PP_CALL Type)  &self = const_cast<REFLECT__PP_CALL(REFLECT__PP_CALL Type)  &>(cself);
 
 
 #define REFLECT__TYPE_PER_MEMBER(x) \
-    func(#x, object.x); 
+    func(#x, self.x); 
+
+#define REFLECT__PRE_MEMBER(x) \
+    func(#x, x);
 
 #define REFLECT__TYPE_END()  \
     }  \
@@ -63,9 +76,6 @@ REFLECT__TYPE_END()
 REFLECT__PP_CALL(REFLECT__TYPE_TEMPLATE_BEGIN Type) \
 REFLECT__PP_FOREACH(REFLECT__TYPE_PER_MEMBER, __VA_ARGS__) \
 REFLECT__TYPE_END()
-
-#define REFLECT__PRE_MEMBER(x) \
-    func(#x, x);
 
     
 #define REFLECT(...) \
