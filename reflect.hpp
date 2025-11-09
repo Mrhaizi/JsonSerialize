@@ -39,18 +39,18 @@ struct reflect_trait {
 
 
 #define REFLECT__TYPE_BEGIN(Type, ...) \
-template <> \ 
-struct reflect_trait<Type> { \ 
-    static  constexpr bool has_members() {return true;}; \ 
+template <> \
+struct reflect_trait<Type> { \
+    static  constexpr bool has_members() {return true;}; \
     template <class Func> \
     static constexpr void for_each_members(Type const& cself, Func&& func) { \
         Type &self = const_cast<Type &>(cself);
 
 
 #define REFLECT__TYPE_TEMPLATE_BEGIN(Type, ...) \
-template <__VA_ARGS__> \ 
-struct reflect_trait<REFLECT__PP_CALL(REFLECT__PP_CALL Type)> { \ 
-    static  constexpr bool has_members() {return true;}; \ 
+template <__VA_ARGS__> \
+struct reflect_trait<REFLECT__PP_CALL(REFLECT__PP_CALL Type)> { \
+    static  constexpr bool has_members() {return true;}; \
     template <class Func> \
     static constexpr void for_each_members(REFLECT__PP_CALL(REFLECT__PP_CALL Type) const& cself, Func&& func) { \
         REFLECT__PP_CALL(REFLECT__PP_CALL Type)  &self = const_cast<REFLECT__PP_CALL(REFLECT__PP_CALL Type)  &>(cself);

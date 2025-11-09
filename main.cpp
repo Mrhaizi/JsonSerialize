@@ -3,8 +3,6 @@
 #include <string>
 #include "reflect.hpp"
 
-#define A
-
 std::string toString(Json::Value json) { 
    Json::StreamWriterBuilder builder;
     builder["indentation"] = " ";
@@ -144,7 +142,7 @@ int main() {
         .id = 1,
         .timestamp = "2025-11-08T15:02",
         .mqtt_humity = {
-            .humity = 50.10000000000,
+            .humity = 70.10000000000,
             .unit = "%",
         },
         .mqtt_tempeature = {
