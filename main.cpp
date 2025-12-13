@@ -129,7 +129,7 @@ struct MqttDataPackage {
 // REFLECT_TYPE_TEMPLATED(((Baby<T,N>), class T, class N), name, month, sex);
 // REFLECT_TYPE_TEMPLATED(((Subject<T, N, M>), class T, class N, class M), name, month, day, year);
 
-REFLECT_TYPE(Address, country, city);
+REFLECT_TYPE(Address, country, city); // 
 REFLECT_TYPE(Student, name, age, sex, address);
 
 
@@ -152,11 +152,11 @@ int main() {
     };
     std::string bin = toString(serialize(val));
     std::cout << bin << "\n";
-    auto val_1 = deserialize<MqttDataPackage>(fromString(bin));
-    std::cout << val_1.id << "\n";
-    std::cout << val_1.timestamp << "\n";
-    std::cout << val_1.mqtt_tempeature.tempeature << val_1.mqtt_tempeature.unit << "\n";
-    std::cout << val_1.mqtt_humity.humity << val_1.mqtt_humity.unit << "\n";
+    // auto val_1 = deserialize<MqttDataPackage>(fromString(bin));
+    // std::cout << val_1.id << "\n";
+    // std::cout << val_1.timestamp << "\n";
+    // std::cout << val_1.mqtt_tempeature.tempeature << val_1.mqtt_tempeature.unit << "\n";
+    // std::cout << val_1.mqtt_humity.humity << val_1.mqtt_humity.unit << "\n";
     // Student stu = {
     //     .name = "ma",
     //     .age = 21,
